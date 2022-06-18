@@ -55,15 +55,6 @@ func TestSwapPeopleWithSameIndex(t *testing.T) {
 	}
 }
 
-// func TestSwapPeopleIndexOutOfRange(t *testing.T) {
-// 	people := People {P1, P2, P3}
-// 	people.Swap(0, 3)
-
-// 	if !((P1 == people[0]) && (P2 == people[1]) && (P3 == people[2])) {
-// 		t.Errorf("persons should not to swap")
-// 	}
-// }
-
 func TestPeopleLen(t *testing.T) {
 	t.Parallel()
 	table := map[string]struct {
@@ -94,6 +85,7 @@ func TestPeopleLess(t *testing.T) {
 
 	table := map[string]struct {
 		Persons People
+		Expected bool
 	} {
 		"same date, same firstName, diff lastName less": {
 			People{
@@ -108,6 +100,7 @@ func TestPeopleLess(t *testing.T) {
 					birthDay: date,
 				},
 			},
+			true,
 		},
 		"same date, diff firstName, diff lastName less": {
 			People{
@@ -122,6 +115,7 @@ func TestPeopleLess(t *testing.T) {
 					birthDay: date,
 				},
 			},
+			true,
 		},
 		"diff date, diff firstName, diff lastName less": {
 			People{
@@ -136,35 +130,17 @@ func TestPeopleLess(t *testing.T) {
 					birthDay: date.Add(time.Duration(1)),
 				},
 			},
+			false,
 		},
 	}
 	for name, tcase := range table {
 		t.Run(name, func (t *testing.T) {
-			if tcase.Persons.Less(0, 1) == false {
+			if tcase.Persons.Less(0, 1) != tcase.Expected {
 				t.Error(ErrMsgForTestLessFunc)
 			}
-			if tcase.Persons.Less(1, 0) == true {
+			if tcase.Persons.Less(1, 0) == tcase.Expected {
 				t.Error(ErrMsgForTestLessFunc)
 			}
 		})
 	}
 }
-
-// func TestPeopleLessIndexOutOfRange(t *testing.T) {
-// 	date := time.Now()
-// 	people := People{
-// 		Person {
-// 			firstName: "a",
-// 			lastName: "b" + "b",
-// 			birthDay: date,
-// 		},
-// 		Person {
-// 			firstName: "a",
-// 			lastName: "b" + "c",
-// 			birthDay: date,
-// 		},
-// 	}
-// 	if people.Less(0, 2) == true {
-// 		t.Errorf("Wrong result of Less function")
-// 	}  
-// }
